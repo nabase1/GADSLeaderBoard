@@ -10,10 +10,10 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:background="@color/colorPrimaryDark">
+        android:backgroundTint="@android:color/transparent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/mtoolbar"
+            android:id="@+id/mtoolbar2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
@@ -26,8 +26,6 @@
             app:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             app:titleTextColor="@color/colorWhite"
             tools:layout_editor_absoluteY="0dp">
-
-            <include layout="@layout/toolbar_button"></include>
 
         </androidx.appcompat.widget.Toolbar>
     </androidx.constraintlayout.widget.ConstraintLayout>

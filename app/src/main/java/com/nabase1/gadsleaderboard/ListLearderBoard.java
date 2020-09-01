@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -30,6 +29,8 @@ public class ListLearderBoard extends AppCompatActivity {
         TabItem learner_item = findViewById(R.id.tab_learning_learders);
         TabItem iq_item = findViewById(R.id.tab_skill_iq);
         ViewPager2 viewPager = findViewById(R.id.view_pager);
+
+
 
         PageAdapter pageAdapter = new PageAdapter(this);
         viewPager.setAdapter(pageAdapter);
@@ -66,19 +67,19 @@ public class ListLearderBoard extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_items, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.item_refresh);
-       // menuItem.getActionView().setBackgroundColor(Color.WHITE);
-        menuItem.getActionView().setPadding(10, 10, 10, 10);
-        menuItem.getActionView().setBackground(getDrawable(R.drawable.roundbtn));
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.item_refresh){
-            startActivity(new Intent(this, SubmitProject.class));
-        }
+//        if(item.getItemId() == R.id.item_submit){
+//            startActivity(new Intent(this, SubmitProject.class));
+//        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void submitForm(View view){
+        startActivity(new Intent(this, SubmitProject.class));
     }
 }
