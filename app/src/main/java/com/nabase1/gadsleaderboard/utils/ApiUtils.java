@@ -11,16 +11,23 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpRetryException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import static com.nabase1.gadsleaderboard.Constants.BASE_URL_API;
 import static com.nabase1.gadsleaderboard.Constants.QUERY_PARAM_KEY;
 
 public class ApiUtils {
+
+    public static Retrofit sRetrofit = null;
 
     public ApiUtils() {
     }
@@ -102,5 +109,19 @@ public class ApiUtils {
         }
 
         return learners;
+    }
+
+
+    public static Retrofit getClient(String baseUrl){
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+
+        if(sRetrofit == null){
+            sRetrofit =  new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(clientBuilder.build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return sRetrofit;
     }
 }

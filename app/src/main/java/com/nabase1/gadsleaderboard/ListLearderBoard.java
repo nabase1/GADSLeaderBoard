@@ -14,6 +14,7 @@ import android.view.View;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.nabase1.gadsleaderboard.adapters.PageAdapter;
+import com.nabase1.gadsleaderboard.fragments.LearningLeaders;
 
 public class ListLearderBoard extends AppCompatActivity {
 
@@ -35,17 +36,6 @@ public class ListLearderBoard extends AppCompatActivity {
         PageAdapter pageAdapter = new PageAdapter(this);
         viewPager.setAdapter(pageAdapter);
 
-//        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-//            @Override
-//            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-//
-//
-//
-//            }
-//        });
-
-       // tabLayoutMediator.attach();
-
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -54,6 +44,24 @@ public class ListLearderBoard extends AppCompatActivity {
             }
         });
 
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
     }
 

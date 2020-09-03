@@ -5,33 +5,35 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.nabase1.gadsleaderboard.databinding.ActivitySubmitProjectBinding;
 import com.nabase1.gadsleaderboard.databinding.ConfirmationDialogDesignBinding;
 import com.nabase1.gadsleaderboard.databinding.DialogDesignBinding;
-import com.nabase1.gadsleaderboard.databinding.ToolbarBinding;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
+
+import static com.nabase1.gadsleaderboard.Constants.*;
+import static com.nabase1.gadsleaderboard.utils.ApiUtils.getClient;
 
 public class SubmitProject extends AppCompatActivity {
 
     private ActivitySubmitProjectBinding mBinding;
-    private ToolbarBinding mToolbarBinding;
 
 
-    public static Retrofit.Builder sBuilder = new Retrofit.Builder()
-            .baseUrl(Constants.GOOGLE_FORMS_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create());
-
-    public static Retrofit sRetrofit = sBuilder.build();
-    private Call<ResponseBody> mCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +57,19 @@ public class SubmitProject extends AppCompatActivity {
         mBinding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showConfirmDialog();
+                if(isFieldEmpty()){
+                    showConfirmDialog();
+                }else {
+                    Toast.makeText(SubmitProject.this, "Please Fill All Fields", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
     }
 
     private void executeSubmitProject(String fname, String lname, String email, String githubLink) {
-        UserClient userClient = sRetrofit.create(UserClient.class);
+        UserClient userClient = getClient(GOOGLE_FORMS_BASE_URL).create(UserClient.class);
 
         Call<ResponseBody> call = userClient.submitProject(fname,
                 lname,
@@ -73,12 +80,30 @@ public class SubmitProject extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
+                if(response.isSuccessful()){
+
+                    clearFields();
+                    showDialog(getString(R.string.submission_successful), R.drawable.ic_baseline_check_circle_24);
+                }else {
+
+                    Log.d("error code", String.valueOf(response.code()));
+                    try {
+                        Log.d("Error body", response.errorBody().string());
+                        Log.d("Error body1", response.body().toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Log.d("Failed", t.getMessage());
+                showDialog(getString(R.string.submission_not_successful), R.drawable.ic_baseline_report_problem_24);
             }
+
+
         });
 
     }
@@ -118,16 +143,31 @@ public class SubmitProject extends AppCompatActivity {
         dialogDesignBinding.buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //                executeSubmitProject(mBinding.editTextFirstName.getText().toString(),
-//                        mBinding.editTextLastName.getText().toString(),
-//                        mBinding.editTextEmail.getText().toString(),
-//                        mBinding.editTextLink.getText().toString());
+                                executeSubmitProject(mBinding.editTextFirstName.getText().toString(),
+                        mBinding.editTextLastName.getText().toString(),
+                        mBinding.editTextEmail.getText().toString(),
+                        mBinding.editTextLink.getText().toString());
 
-                //showDialog(getString(R.string.submission_successful), R.drawable.ic_baseline_report_problem_24);
                 alertDialog.dismiss();
-                showDialog(getString(R.string.submission_successful), R.drawable.ic_baseline_check_circle_24);
+
             }
         });
+    }
+
+    public void clearFields(){
+        mBinding.editTextLink.setText("");
+        mBinding.editTextEmail.setText("");
+        mBinding.editTextFirstName.setText("");
+        mBinding.editTextLastName.setText("");
+    }
+
+    public Boolean isFieldEmpty(){
+        boolean checkField = !mBinding.editTextLastName.getText().toString().isEmpty() &&
+                            !mBinding.editTextFirstName.getText().toString().isEmpty() &&
+                            !mBinding.editTextEmail.getText().toString().isEmpty() &&
+                            !mBinding.editTextLink.getText().toString().isEmpty();
+
+        return checkField;
     }
 
 }
