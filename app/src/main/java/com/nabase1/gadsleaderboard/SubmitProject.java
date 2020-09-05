@@ -9,23 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
-
-import com.google.gson.JsonObject;
 import com.nabase1.gadsleaderboard.databinding.ActivitySubmitProjectBinding;
 import com.nabase1.gadsleaderboard.databinding.ConfirmationDialogDesignBinding;
 import com.nabase1.gadsleaderboard.databinding.DialogDesignBinding;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.POST;
-
 import static com.nabase1.gadsleaderboard.Constants.*;
 import static com.nabase1.gadsleaderboard.utils.ApiUtils.getClient;
 
@@ -81,18 +72,12 @@ public class SubmitProject extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if(response.isSuccessful()){
-
                     clearFields();
                     showDialog(getString(R.string.submission_successful), R.drawable.ic_baseline_check_circle_24);
                 }else {
 
+                    showDialog(getString(R.string.submission_not_successful), R.drawable.ic_baseline_report_problem_24);
                     Log.d("error code", String.valueOf(response.code()));
-                    try {
-                        Log.d("Error body", response.errorBody().string());
-                        Log.d("Error body1", response.body().toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
 
             }

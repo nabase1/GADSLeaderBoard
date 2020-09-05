@@ -18,7 +18,10 @@ import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -113,13 +116,18 @@ public class ApiUtils {
 
 
     public static Retrofit getClient(String baseUrl){
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor);
 
         if(sRetrofit == null){
             sRetrofit =  new Retrofit.Builder()
                     .baseUrl(baseUrl)
-                    .client(clientBuilder.build())
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client(clientBuilder.build())
                     .build();
         }
         return sRetrofit;

@@ -6,18 +6,15 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-import static com.nabase1.gadsleaderboard.Constants.*;
-
 public interface UserClient {
 
-
-    @POST(GOOGLE_FORMS_ID)
+    @POST("1FAIpQLSf9d1TcNU6zc6KR8bSEM41Z1g1zl35cwZr2xyjIhaMAz8WChQ/formResponse")
     @FormUrlEncoded
     Call<ResponseBody>submitProject(
-            @Field(FIRST_NAME_ID) String first_name,
-            @Field(LAST_NAME_ID) String last_name,
-            @Field(EMAIL_ID) String email,
-            @Field(LINK_TO_PROJECT) String github_link
+            @Field("entry.1877115667") String name,
+            @Field("entry.2006916086") String last_name,
+            @Field("entry.1824927963") String email,
+            @Field("entry.284483984") String github_link
     );
 
 
