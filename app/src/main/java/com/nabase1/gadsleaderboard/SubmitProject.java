@@ -72,10 +72,12 @@ public class SubmitProject extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if(response.isSuccessful()){
+                    mBinding.progressBar3.setVisibility(View.INVISIBLE);
                     clearFields();
                     showDialog(getString(R.string.submission_successful), R.drawable.ic_baseline_check_circle_24);
                 }else {
 
+                    mBinding.progressBar3.setVisibility(View.INVISIBLE);
                     showDialog(getString(R.string.submission_not_successful), R.drawable.ic_baseline_report_problem_24);
                     Log.d("error code", String.valueOf(response.code()));
                 }
@@ -84,6 +86,7 @@ public class SubmitProject extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                mBinding.progressBar3.setVisibility(View.INVISIBLE);
                 Log.d("Failed", t.getMessage());
                 showDialog(getString(R.string.submission_not_successful), R.drawable.ic_baseline_report_problem_24);
             }
@@ -128,6 +131,7 @@ public class SubmitProject extends AppCompatActivity {
         dialogDesignBinding.buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mBinding.progressBar3.setVisibility(View.VISIBLE);
                                 executeSubmitProject(mBinding.editTextFirstName.getText().toString(),
                         mBinding.editTextLastName.getText().toString(),
                         mBinding.editTextEmail.getText().toString(),
