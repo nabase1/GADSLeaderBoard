@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.nabase1.gadsleaderboard.Constants;
 import com.nabase1.gadsleaderboard.R;
 import com.nabase1.gadsleaderboard.adapters.LeanerBoardAdapter;
 import com.nabase1.gadsleaderboard.adapters.SkillIqAdapter;
@@ -21,6 +22,8 @@ import com.nabase1.gadsleaderboard.utils.ApiUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import static com.nabase1.gadsleaderboard.Constants.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +75,7 @@ public class SkillIQLeaders extends Fragment {
         }
 
         try{
-            URL url = ApiUtils.buildUrl("skilliq");
+            URL url = ApiUtils.buildUrl(SKILL_IQ);
             new QueryTask().execute(url);
         }catch (Exception e){
             e.printStackTrace();

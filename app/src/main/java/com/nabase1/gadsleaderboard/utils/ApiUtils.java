@@ -2,31 +2,22 @@ package com.nabase1.gadsleaderboard.utils;
 
 import android.net.Uri;
 import android.util.Log;
-
 import com.nabase1.gadsleaderboard.modals.Learners;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpRetryException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import javax.net.ssl.HttpsURLConnection;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.nabase1.gadsleaderboard.Constants.BASE_URL_API;
-import static com.nabase1.gadsleaderboard.Constants.QUERY_PARAM_KEY;
 
 public class ApiUtils {
 
@@ -36,7 +27,7 @@ public class ApiUtils {
     }
 
     public static URL buildUrl(String title){
-        //String fullUrl = BASE_URL_API + title;
+
         URL url = null;
         Uri uri = Uri.parse(BASE_URL_API).buildUpon()
                 .appendPath(title)

@@ -16,4 +16,5 @@
     <string name="submission_not_successful">Submission not Successful</string>
     <string name="yes">Yes</string>
     <string name="are_you_sure">Are You Sure?</string>
+    <string name="required_fields">Please Fill All Fields</string>
 </resources>

@@ -2,24 +2,21 @@ package com.nabase1.gadsleaderboard.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import com.nabase1.gadsleaderboard.R;
 import com.nabase1.gadsleaderboard.adapters.LeanerBoardAdapter;
 import com.nabase1.gadsleaderboard.modals.Learners;
 import com.nabase1.gadsleaderboard.utils.ApiUtils;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import static com.nabase1.gadsleaderboard.Constants.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,13 +68,11 @@ public class LearningLeaders extends Fragment {
         }
 
         try{
-            URL url = ApiUtils.buildUrl("hours");
+            URL url = ApiUtils.buildUrl(sHours);
             new QueryTask().execute(url);
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -92,7 +87,6 @@ public class LearningLeaders extends Fragment {
         initialize(mRecyclerView);
 
         return items;
-
     }
 
     public void initialize(RecyclerView recyclerView){
@@ -116,22 +110,15 @@ public class LearningLeaders extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-
             if(s == null){
                 mRecyclerView.setVisibility(View.INVISIBLE);
-               // mProgressBar.setVisibility(View.VISIBLE);
             }else {
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mProgressBar.setVisibility(View.GONE);
-
             }
-
             ArrayList<Learners> learners = ApiUtils.getLeaderListFromJson(s);
-
             LeanerBoardAdapter leanerBoardAdapter = new LeanerBoardAdapter(learners);
             mRecyclerView.setAdapter(leanerBoardAdapter);
-
-
         }
 
         @Override

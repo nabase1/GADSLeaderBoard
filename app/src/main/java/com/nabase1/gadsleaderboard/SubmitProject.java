@@ -22,9 +22,8 @@ import static com.nabase1.gadsleaderboard.utils.ApiUtils.getClient;
 
 public class SubmitProject extends AppCompatActivity {
 
+    private static final String TAG = SubmitProject.class.getCanonicalName();
     private ActivitySubmitProjectBinding mBinding;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class SubmitProject extends AppCompatActivity {
                 if(isFieldEmpty()){
                     showConfirmDialog();
                 }else {
-                    Toast.makeText(SubmitProject.this, "Please Fill All Fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SubmitProject.this, getString(R.string.required_fields), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -59,13 +58,15 @@ public class SubmitProject extends AppCompatActivity {
 
     }
 
+    //method for submission
     private void executeSubmitProject(String fname, String lname, String email, String githubLink) {
-        UserClient userClient = getClient(GOOGLE_FORMS_BASE_URL).create(UserClient.class);
+
+        UserClient userClient = getClient(GOOGLE_FORMS_BASE_URL).create(UserClient.class);  //instantiating userClient interface
 
         Call<ResponseBody> call = userClient.submitProject(fname,
-                lname,
-                email,
-                githubLink);
+                                    lname,
+                                    email,
+                                    githubLink);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -79,7 +80,7 @@ public class SubmitProject extends AppCompatActivity {
 
                     mBinding.progressBar3.setVisibility(View.INVISIBLE);
                     showDialog(getString(R.string.submission_not_successful), R.drawable.ic_baseline_report_problem_24);
-                    Log.d("error code", String.valueOf(response.code()));
+                    Log.d(TAG, String.valueOf(response.code()));
                 }
 
             }
